@@ -1,0 +1,90 @@
+class Player:
+    def __init__(self, name, position, skill_level, experience):
+        self.name = name
+        self.position = position
+        self.skill_level = skill_level
+        self.experience = experience
+
+    def __str__(self):
+        return f"{self.name} ({self.position}) - Skill: {self.skill_level}, Experience: {self.experience} years"
+
+
+class Team:
+    def __init__(self, name, max_players):
+        self.name = name
+        self.max_players = max_players
+        self.players = []
+
+    def add_player(self, player):
+        if len(self.players) < self.max_players:
+            self.players.append(player)
+        else:
+            print("Team is full.")
+
+    def __str__(self):
+        players_str = "\n".join(str(player) for player in self.players)
+        return f"{self.name} ({len(self.players)}/{self.max_players} players):\n{players_str}"
+
+
+class TeamFormation:
+    def __init__(self):
+        self.players = []
+        self.teams = []
+
+    def register_player(self, player):
+       
+       self.players.append(player)
+
+    def create_team(self, team_name, max_players):
+        
+        team = Team(team_name, max_players)
+        self.teams.append(team)
+        return team
+
+    def assign_player_to_team(self, player_name, team_name): 
+        player = None
+        team = None
+
+        # Find player
+        for p in self.players:
+            if p.name == player_name:
+                player = p
+                break
+
+        # Find team
+        for t in self.teams:
+            if t.name == team_name:
+                team = t
+                break
+
+        if player and team:
+            team.add_player(player)
+        else:
+            print("Player or team not found.")
+
+    def display_teams(self):
+        
+        for team in self.teams:
+            print(team)
+
+
+class Main:
+    formation = TeamFormation()
+
+    # Register players
+    formation.register_player(Player("John", "Forward", 8, 5))
+    formation.register_player(Player("Jane", "Midfielder", 7, 3))
+    formation.register_player(Player("Bob", "Defender", 6, 2))
+
+    # Create teams
+    team1 = formation.create_team("Team A", 5)
+    team2 = formation.create_team("Team B", 5)
+
+    # Assign players to teams
+    formation.assign_player_to_team("John", "Team A")
+    formation.assign_player_to_team("Jane", "Team A")
+    formation.assign_player_to_team("Bob", "Team B")
+
+    # Display teams
+    formation.display_teams()
+
